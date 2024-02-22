@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qr_code_scanner/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,13 +33,31 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const MyWidget(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class MyWidget extends StatefulWidget {
+  const MyWidget({super.key});
+
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+// const buttonPrimary = Color(0xFF34DD5A);
+// const buttonSecondary = Color(0xFF829286);
+
+class _MyWidgetState extends State<MyWidget> {
+  Color _buttonColor = const Color(0xFF34DD5A);
+
+  void _changeColor() {
+    setState(() {
+      _buttonColor = _buttonColor == const Color(0xFF34DD5A)
+          ? const Color(0xFF829286)
+          : const Color(0xFF34DD5A);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +88,61 @@ class MyHomePage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                     onPressed: () {
-                      print('Button Pressed');
+                      _changeColor();
+                      showModalBottomSheet(
+                          context: context,
+                          builder: ((context) {
+                            return Container(
+                              height: 290,
+                              color: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 50, horizontal: 60),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    const Text('Update Photo',
+                                        style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w500,
+                                            color: textColor)),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    const Text(
+                                        'You are only able to change the picture profile once',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: textColorSecondary)),
+                                    const SizedBox(
+                                      height: 30,
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: primaryColor,
+                                        foregroundColor: secondaryColor,
+                                        minimumSize: const Size(224, 55),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Continue',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                      onPressed: () => Navigator.pop(context),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF34DD5A),
+                      backgroundColor: _buttonColor,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 39, vertical: 19),
                       shape: RoundedRectangleBorder(
