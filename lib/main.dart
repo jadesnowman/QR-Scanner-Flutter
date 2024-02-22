@@ -45,9 +45,6 @@ class MyWidget extends StatefulWidget {
   State<MyWidget> createState() => _MyWidgetState();
 }
 
-// const buttonPrimary = Color(0xFF34DD5A);
-// const buttonSecondary = Color(0xFF829286);
-
 class _MyWidgetState extends State<MyWidget> {
   Color _buttonColor = const Color(0xFF34DD5A);
 
@@ -59,119 +56,133 @@ class _MyWidgetState extends State<MyWidget> {
     });
   }
 
+  Widget _buildButton() {
+    return ElevatedButton(
+      onPressed: _changeColorAndShowModal,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: _buttonColor,
+        padding: const EdgeInsets.symmetric(horizontal: 39, vertical: 19),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+      child: _buildButtonChild(),
+    );
+  }
+
+  Widget _buildButtonChild() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(
+          'assets/images/qr_icon.png',
+          width: 35,
+          height: 33,
+        ),
+        const SizedBox(width: 5),
+        _buildButtonText(),
+      ],
+    );
+  }
+
+  Widget _buildButtonText() {
+    return Text(
+      'Scan QR Code',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 26,
+        fontFamily: GoogleFonts.roboto().fontFamily,
+      ),
+    );
+  }
+
+  void _changeColorAndShowModal() {
+    _changeColor();
+    showModalBottomSheet(
+      context: context,
+      builder: _buildModalContent,
+    );
+  }
+
+  Widget _buildModalContent(BuildContext context) {
+    return Container(
+      height: 290,
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 60),
+      child: _buildModalChildren(),
+    );
+  }
+
+  Widget _buildModalChildren() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const Text('Update Photo',
+              style: TextStyle(
+                  fontSize: 22, fontWeight: FontWeight.w500, color: textColor)),
+          const SizedBox(height: 12),
+          const Text('You are only able to change the picture profile once',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, color: textColorSecondary)),
+          const SizedBox(height: 30),
+          _buildContinueButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContinueButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryColor,
+        foregroundColor: secondaryColor,
+        minimumSize: const Size(224, 55),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      child: const Text('Continue', style: TextStyle(fontSize: 16)),
+      onPressed: () => Navigator.pop(context),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Scan your QR Code',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 30,
-                    fontFamily: GoogleFonts.roboto().fontFamily,
-                  )),
-              const SizedBox(
-                height: 120,
-              ),
-              Image.asset(
-                'assets/images/qr.png',
-                width: 346.28,
-                height: 372.28,
-              ),
-              const SizedBox(
-                height: 73.72,
-              ),
-              Center(
-                child: ElevatedButton(
-                    onPressed: () {
-                      _changeColor();
-                      showModalBottomSheet(
-                          context: context,
-                          builder: ((context) {
-                            return Container(
-                              height: 290,
-                              color: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 50, horizontal: 60),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    const Text('Update Photo',
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.w500,
-                                            color: textColor)),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    const Text(
-                                        'You are only able to change the picture profile once',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            color: textColorSecondary)),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: primaryColor,
-                                        foregroundColor: secondaryColor,
-                                        minimumSize: const Size(224, 55),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Continue',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _buttonColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 39, vertical: 19),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(
-                          'assets/images/qr_icon.png',
-                          width: 35,
-                          height: 33,
-                        ),
-                        const SizedBox(
-                            width: 5), // Adjust spacing between image and text
-                        Text(
-                          'Scan QR Code',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 26,
-                              fontFamily: GoogleFonts.roboto().fontFamily),
-                        ),
-                      ],
-                    )),
-              )
-            ],
-          ),
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTitleText(),
+            const SizedBox(height: 120),
+            _buildQrImage(),
+            const SizedBox(height: 73.72),
+            _buildButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitleText() {
+    return Text('Scan your QR Code',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w900,
+          fontSize: 30,
+          fontFamily: GoogleFonts.roboto().fontFamily,
         ));
+  }
+
+  Widget _buildQrImage() {
+    return Image.asset(
+      'assets/images/qr.png',
+      width: 346.28,
+      height: 372.28,
+    );
   }
 }
